@@ -4,6 +4,7 @@
 import xml.etree.ElementTree as ET
 from decimal import Decimal
 import sys
+import os
 
 # Vendor Libraries
 import yaml
@@ -58,6 +59,9 @@ def build(iconset_id='fa', include_ids=[]):
         'default_width': default_width,
     }
 
+    if not os.path.exists('build'):
+        os.makedirs('build')
+
     etemplatef = open('res/element-template.html', 'r')
     etemplate = Template(etemplatef.read())
     etemplatef.close()
@@ -78,9 +82,10 @@ def build(iconset_id='fa', include_ids=[]):
     dfile.close()
 
 
-
-
 if __name__ == "__main__":
-    print sys.argv
+    usage = "./makefaicons.py <iconset-id> [icon_id1] [icon_id2] ..."
+    try:
+        build(iconset_id=sys.argv[1], include_ids=sys.argv[2:])
+    except IndexError:
+        print usage
 
-    build(iconset_id=sys.argv[1], include_ids=sys.argv[2:])
