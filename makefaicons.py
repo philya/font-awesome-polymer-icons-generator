@@ -2,6 +2,7 @@
 
 # Standard Library
 import xml.etree.ElementTree as ET
+from decimal import Decimal
 
 # Vendor Libraries
 import yaml
@@ -24,14 +25,7 @@ def main():
     for ii in iconsd['icons']:      
         icond_map[ii['unicode']] = ii
 
-    glyphs_out = open('build/glyphs.out', 'w')
-
-    for key, idef in icond_map.items():
-        if key in glyph_map:
-            # print glyph_map[key].get('horiz-adv-x')
-            glyphs_out.write('<g id="%s"><path d="%s"/></g>\n' % (idef['id'], glyph_map[key].get('d')))
-
-    glyphs_out.close()
+    default_width = 1792
 
     glyphs = []
     
@@ -41,12 +35,29 @@ def main():
             glyphel = glyph_map[key]
             glyph['d'] = glyphel.get('d')
             glyph['horiz-adv-x'] = glyphel.get('horiz-adv-x')
+
+            scale = 1
+            x_margin = 0
+            if glyph['horiz-adv-x']:
+                custom_width = int(glyph['horiz-adv-x'])
+                if custom_width < default_width:
+                    x_margin = (default_width - custom_width) / 2
+
+                if custom_width > default_width:
+                    scale = Decimal(float(default_width) / float(custom_width), 2).quantize(Decimal('0.0001'))
+
+            glyph['x_margin'] = x_margin
+            glyph['scale'] = str(scale)
+            
             glyphs.append(glyph)
 
     etemplatef = open('res/element-template.html', 'r')
     etemplate = Template(etemplatef.read())
     etemplatef.close()
-    econtent = etemplate.render(glyphs=glyphs)
+    econtent = etemplate.render(
+        glyphs=glyphs,
+        default_width=default_width
+    )
 
     efile = open('build/fa-icons.html', 'w')
     efile.write(econtent)

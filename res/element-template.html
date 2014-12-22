@@ -2,11 +2,11 @@
 <link rel="import" href="../core-icon/core-icon.html">
 <link rel="import" href="../core-iconset-svg/core-iconset-svg.html">
 
-<core-iconset-svg id="fa" iconSize="1792">
+<core-iconset-svg id="fa" iconSize="{{ default_width }}">
 <svg><defs>
 
 {% for g in glyphs %}
-  <g id="{{ g.id }}" transform="scale(1 -1) translate(0 -1536)"><path d="{{ g.d }}"/></g>
+<g id="{{ g.id }}" transform="scale({{ g.scale }} -{{ g.scale }}) translate({{ g.x_margin }} -1536)"><path d="{{ g.d }}"/></g>
 {% endfor %}
 
 </defs></svg>
