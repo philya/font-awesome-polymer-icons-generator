@@ -38,6 +38,10 @@ Then, use your FA icons in polymer like this:
 
     <core-icon icon="fa:line-chart"></core-icon>
 
+You can download a pre-generated complete icon set here: [philya/polymer-font-awesome-icons](https://github.com/philya/font-awesome-polymer-icons). Or install it with Bower:
+
+    bower install font-awesome-polymer-icons
+
 ## Choose Specific Icons (Production)
 
 For example:
