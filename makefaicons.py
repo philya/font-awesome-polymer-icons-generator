@@ -8,7 +8,7 @@ from decimal import Decimal
 import yaml
 from jinja2 import Template
 
-def main():
+def build(iconset_id='fa', include_ids=[]):
     tree = ET.parse('res/fontawesome-webfont.svg')
     root = tree.getroot()
     namespaces = {'svg': 'http://www.w3.org/2000/svg'}
@@ -51,13 +51,16 @@ def main():
             
             glyphs.append(glyph)
 
+    context = {
+        'iconset_id': iconset_id,
+        'glyphs': glyphs,
+        'default_width': default_width,
+    }
+
     etemplatef = open('res/element-template.html', 'r')
     etemplate = Template(etemplatef.read())
     etemplatef.close()
-    econtent = etemplate.render(
-        glyphs=glyphs,
-        default_width=default_width
-    )
+    econtent = etemplate.render(**context)
 
     efile = open('build/fa-icons.html', 'w')
     efile.write(econtent)
