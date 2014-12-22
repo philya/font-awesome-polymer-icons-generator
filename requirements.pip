@@ -1,0 +1,4 @@
+PyYAML==3.11
+argparse==1.2.1
+pyaml==14.12.10
+wsgiref==0.1.2
