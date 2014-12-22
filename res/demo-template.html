@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-Polymer icon set gernerated from Font Awesome SVG Font
+Polymer icon set generated from Font Awesome SVG Font
 using Font Awesome Polymer Icons Generator
 https://github.com/philya/font-awesome-polymer-icons-generator
 -->
@@ -8,12 +8,12 @@ https://github.com/philya/font-awesome-polymer-icons-generator
 <html>
 <head>
 
-  <title>core-icons</title>
+  <title>Font Awesome Icon Set: {{ iconset_id }}</title>
   <script src="https://www.polymer-project.org/components/webcomponentsjs/webcomponents.js"></script>
   <!-- load default set -->
   <link rel="import" href="https://www.polymer-project.org/components/core-icons/core-icons.html">
   <!-- load the rest -->
-  <link rel="import" href="fa-icons.html">
+  <link rel="import" href="{{ iconset_id }}-icons.html">
   <style>
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial;
@@ -64,7 +64,7 @@ https://github.com/philya/font-awesome-polymer-icons-generator
   </style>
 </head>
 <body unresolved>
-
+  {% raw %}
   <template is="auto-binding">
     <template repeat="{{iconset in $.meta.metaArray}}">
       <template if="{{iconset.id != 'icons'}}">
@@ -82,6 +82,6 @@ https://github.com/philya/font-awesome-polymer-icons-generator
     </template>
     <core-iconset id="meta"></core-iconset>
   </template>
-
+  {% endraw %}
 </body>
 </html>

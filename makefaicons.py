@@ -3,6 +3,7 @@
 # Standard Library
 import xml.etree.ElementTree as ET
 from decimal import Decimal
+import sys
 
 # Vendor Libraries
 import yaml
@@ -30,7 +31,7 @@ def build(iconset_id='fa', include_ids=[]):
     glyphs = []
     
     for key, idef in icond_map.items():
-        if key in glyph_map:
+        if key in glyph_map and (len(include_ids) == 0 or idef['id'] in include_ids):
             glyph = idef
             glyphel = glyph_map[key]
             glyph['d'] = glyphel.get('d')
@@ -62,10 +63,24 @@ def build(iconset_id='fa', include_ids=[]):
     etemplatef.close()
     econtent = etemplate.render(**context)
 
-    efile = open('build/fa-icons.html', 'w')
+    efile = open('build/%s-icons.html' % iconset_id, 'w')
     efile.write(econtent)
     efile.close()
 
+    demotemplatef = open('res/demo-template.html', 'r')
+    demotemplate = Template(demotemplatef.read())
+    demotemplatef.close()
+
+    democontent = demotemplate.render(**context)
+
+    dfile = open('build/demo.html', 'w')
+    dfile.write(democontent)
+    dfile.close()
+
+
+
 
 if __name__ == "__main__":
-    main()
+    print sys.argv
+
+    build(iconset_id=sys.argv[1], include_ids=sys.argv[2:])
